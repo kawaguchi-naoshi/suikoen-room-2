@@ -220,6 +220,44 @@
   .floorplan-chip .fp-icon{font-size:13px;}
   .floorplan-chip.small{padding:5px 11px 5px 8px;font-size:10.5px;right:10px;bottom:10px;}
 
+  /* ===== 写真ギャラリー(スライド＋サムネイル) ===== */
+  .zig-media.has-gallery{
+    background:none;display:block;padding:14px 14px 12px;min-height:auto;
+  }
+  .gallery-main{position:relative;aspect-ratio:16/10;border-radius:4px;overflow:hidden;background:#eee;}
+  .gallery-slide{
+    position:absolute;inset:0;display:none;align-items:center;justify-content:center;
+    background:repeating-linear-gradient(135deg,#e4ded0,#e4ded0 16px,#d9d2c2 16px,#d9d2c2 32px);
+    color:#a39c8c;font-size:12.5px;letter-spacing:0.04em;text-align:center;padding:14px;
+  }
+  .gallery-slide.is-active{display:flex;}
+  .gallery-nav{
+    position:absolute;top:50%;transform:translateY(-50%);z-index:2;
+    background:rgba(255,255,255,0.88);border:none;width:32px;height:32px;border-radius:50%;
+    font-size:15px;line-height:1;cursor:pointer;color:var(--ink);
+  }
+  .gallery-nav:hover{background:#fff;}
+  .gallery-nav.prev{left:10px;}
+  .gallery-nav.next{right:10px;}
+  .gallery-count{
+    position:absolute;top:10px;left:10px;z-index:2;
+    background:rgba(0,0,0,0.45);color:#fff;font-size:10.5px;padding:3px 9px;border-radius:20px;
+  }
+  .gallery-thumbs{display:flex;gap:6px;margin-top:8px;overflow-x:auto;padding-bottom:2px;}
+  .gallery-thumb{
+    flex:0 0 auto;font-size:10.5px;color:var(--sumi);background:var(--cream);
+    border:1px solid var(--line);border-radius:4px;padding:6px 11px;cursor:pointer;white-space:nowrap;
+  }
+  .gallery-thumb.is-active{background:var(--emerald-deep);color:#fff;border-color:var(--emerald-deep);}
+
+  /* ===== 特典ボックス内の写真 ===== */
+  .perk-photo{
+    width:64px;height:64px;flex-shrink:0;border-radius:4px;
+    background:repeating-linear-gradient(135deg,#e4ded0,#e4ded0 10px,#d9d2c2 10px,#d9d2c2 20px);
+    display:flex;align-items:center;justify-content:center;
+    color:#a39c8c;font-size:9px;text-align:center;padding:4px;line-height:1.3;
+  }
+
   .fp-modal{
     position:fixed;inset:0;background:rgba(12,20,18,0.72);z-index:200;
     display:none;align-items:center;justify-content:center;padding:24px;
@@ -365,7 +403,7 @@
 
 <div class="note-bar">
   このページは「客室ページ」の<strong>構成案2</strong>です。構成案1（写真＋テキストを縦に積む構成）をベースに、トップページ構成案2のジグザグ・ストーリーテリングに合わせてレイアウトを変更しています。実際のデザイン（フォント・配色・写真・動画）とは異なります。<br>
-  構成案1との違い：①メインビジュアルを静止画から短尺ループ動画に変更　②各客室タイプの概要を「写真＋テキスト」を左右交互に配置するジグザグ構成に変更（特別室→和室→洋室の順で左右反転）　③各客室に間取り図（クリックで拡大）を追加　④定員によるかんたん絞り込み機能を追加（新規アイデア）<br>
+  構成案1との違い：①メインビジュアルを静止画から短尺ループ動画に変更　②各客室タイプの概要を「写真＋テキスト」を左右交互に配置するジグザグ構成に変更（特別室→和室→洋室の順で左右反転）　③各客室に間取り図（クリックで拡大）を追加　④定員によるかんたん絞り込み機能を追加（新規アイデア）　⑤各客室に複数写真のギャラリー（スライド＋サムネイル）を追加<br>
   バッジの意味：<span class="tag tag-new">新規</span>新規作成 　<span class="tag tag-edit">要調整</span>現行から内容変更・要確認 　<span class="tag tag-keep">継続</span>現行サイトの内容を流用
 </div>
 
@@ -438,9 +476,33 @@
 <section id="special" style="background:var(--paper);">
   <div class="section-inner">
     <div class="zig-row">
-      <div class="zig-media">
-        [ 写真：特別室の家族風呂・客室内観 ]
-        <div class="floorplan-chip" onclick="openFloorplan('特別室（家族風呂付き）','和洋室85㎡・家族風呂（源泉かけ流し）付き。実測の間取り図は撮影・採寸後に差し替え予定です。')"><span class="fp-icon">▦</span>間取り図</div>
+      <div class="zig-media has-gallery">
+        <div class="gallery-main" id="gallery-special">
+          <div class="gallery-slide is-active">[ 写真：全体 ]</div>
+          <div class="gallery-slide">[ 写真：家族風呂 ]</div>
+          <div class="gallery-slide">[ 写真：ベッド ]</div>
+          <div class="gallery-slide">[ 写真：アメニティルーム ]</div>
+          <div class="gallery-slide">[ 写真：庭 ]</div>
+          <div class="gallery-slide">[ 写真：洗面所 ]</div>
+          <div class="gallery-slide">[ 写真：トイレ ]</div>
+          <div class="gallery-slide">[ 写真：アメニティ ]</div>
+          <div class="gallery-slide">[ 写真：その他 ]</div>
+          <span class="gallery-count" id="gallery-special-count">1 / 9</span>
+          <button class="gallery-nav prev" onclick="galleryNav('gallery-special',-1)">‹</button>
+          <button class="gallery-nav next" onclick="galleryNav('gallery-special',1)">›</button>
+          <div class="floorplan-chip" onclick="openFloorplan('特別室（家族風呂付き）','和洋室85㎡・家族風呂（源泉かけ流し）付き。実測の間取り図は撮影・採寸後に差し替え予定です。')"><span class="fp-icon">▦</span>間取り図</div>
+        </div>
+        <div class="gallery-thumbs">
+          <div class="gallery-thumb is-active" onclick="gallerySet('gallery-special',0)">全体</div>
+          <div class="gallery-thumb" onclick="gallerySet('gallery-special',1)">家族風呂</div>
+          <div class="gallery-thumb" onclick="gallerySet('gallery-special',2)">ベッド</div>
+          <div class="gallery-thumb" onclick="gallerySet('gallery-special',3)">アメニティルーム</div>
+          <div class="gallery-thumb" onclick="gallerySet('gallery-special',4)">庭</div>
+          <div class="gallery-thumb" onclick="gallerySet('gallery-special',5)">洗面所</div>
+          <div class="gallery-thumb" onclick="gallerySet('gallery-special',6)">トイレ</div>
+          <div class="gallery-thumb" onclick="gallerySet('gallery-special',7)">アメニティ</div>
+          <div class="gallery-thumb" onclick="gallerySet('gallery-special',8)">その他</div>
+        </div>
       </div>
       <div class="zig-text">
         <span class="zig-number mincho">01</span>
@@ -470,7 +532,7 @@
     </div>
 
     <div class="design-note">
-      <b>設計メモ：</b>構成案1では「横幅いっぱいの大きな写真」でしたが、本案では写真とテキストを左右に並べるジグザグ構成に変更（特別室は写真を左・テキストを右）。写真の右下に間取り図チップを追加し、クリックすると簡易モーダルで拡大表示します（実装イメージとしてJavaScriptで動作するようにしてあります）。番号「01」は特別室→和室→洋室という紹介順を示すための構造的な要素です。
+      <b>設計メモ：</b>構成案1では「横幅いっぱいの大きな写真」でしたが、本案では写真とテキストを左右に並べるジグザグ構成に変更（特別室は写真を左・テキストを右）。写真の右下に間取り図チップを追加し、クリックすると簡易モーダルで拡大表示します（実装イメージとしてJavaScriptで動作するようにしてあります）。番号「01」は特別室→和室→洋室という紹介順を示すための構造的な要素です。特別室は当館一室限定のため、全体・家族風呂・ベッド・アメニティルーム・庭・洗面所・トイレ・アメニティ・その他の9枚をスライド＋サムネイルのギャラリーで見せています（矢印またはサムネイルクリックで切替）。
     </div>
   </div>
 </section>
@@ -479,9 +541,27 @@
 <section id="washitsu" style="background:var(--cream);">
   <div class="section-inner">
     <div class="zig-row reverse">
-      <div class="zig-media">
-        [ 写真：和室（代表写真） ]
-        <div class="floorplan-chip" onclick="openFloorplan('和室（代表）','8畳・10畳・12畳・14畳の4タイプをご用意。各タイプの詳細な間取り図は下の一覧からご確認いただけます。')"><span class="fp-icon">▦</span>間取り図</div>
+      <div class="zig-media has-gallery">
+        <div class="gallery-main" id="gallery-washitsu">
+          <div class="gallery-slide is-active">[ 写真：浴室 ]</div>
+          <div class="gallery-slide">[ 写真：洗面所 ]</div>
+          <div class="gallery-slide">[ 写真：トイレ ]</div>
+          <div class="gallery-slide">[ 写真：眺望（例） ]</div>
+          <div class="gallery-slide">[ 写真：アメニティ ]</div>
+          <div class="gallery-slide">[ 写真：その他 ]</div>
+          <span class="gallery-count" id="gallery-washitsu-count">1 / 6</span>
+          <button class="gallery-nav prev" onclick="galleryNav('gallery-washitsu',-1)">‹</button>
+          <button class="gallery-nav next" onclick="galleryNav('gallery-washitsu',1)">›</button>
+          <div class="floorplan-chip" onclick="openFloorplan('和室（代表）','8畳・10畳・12畳・14畳の4タイプをご用意。各タイプの詳細な間取り図は下の一覧からご確認いただけます。')"><span class="fp-icon">▦</span>間取り図</div>
+        </div>
+        <div class="gallery-thumbs">
+          <div class="gallery-thumb is-active" onclick="gallerySet('gallery-washitsu',0)">浴室</div>
+          <div class="gallery-thumb" onclick="gallerySet('gallery-washitsu',1)">洗面所</div>
+          <div class="gallery-thumb" onclick="gallerySet('gallery-washitsu',2)">トイレ</div>
+          <div class="gallery-thumb" onclick="gallerySet('gallery-washitsu',3)">眺望（例）</div>
+          <div class="gallery-thumb" onclick="gallerySet('gallery-washitsu',4)">アメニティ</div>
+          <div class="gallery-thumb" onclick="gallerySet('gallery-washitsu',5)">その他</div>
+        </div>
       </div>
       <div class="zig-text">
         <span class="zig-number mincho">02</span>
@@ -551,7 +631,7 @@
     </div>
 
     <div class="design-note">
-      <b>設計メモ：</b>和室は特別室と左右を反転し、テキストを左・写真を右に配置してジグザグのリズムを作っています。4タイプの比較がしやすいよう、代表写真＋テキストの下には引き続き2×2の小型グリッドを残し、各カードにも個別の間取り図チップを追加しました。各カードには定員（4〜6名）をデータとして持たせており、ページ上部の「定員でさがす」ボタンと連動して絞り込み表示できます。
+      <b>設計メモ：</b>和室は特別室と左右を反転し、テキストを左・写真を右に配置してジグザグのリズムを作っています。4タイプの比較がしやすいよう、代表ギャラリー＋テキストの下には引き続き2×2の小型グリッドを残し、各カードにも個別の間取り図チップを追加しました。各カードには定員（4〜6名）をデータとして持たせており、ページ上部の「定員でさがす」ボタンと連動して絞り込み表示できます。浴室・洗面所・トイレ・眺望（例）・アメニティ・その他の6枚は14〜8畳の4サイズに共通する設備として、代表ギャラリー側にまとめて掲載しています（サイズごとの個別写真は各カードの1枚でご確認いただけます）。
     </div>
   </div>
 </section>
@@ -560,9 +640,23 @@
 <section id="yoshitsu" style="background:var(--paper);">
   <div class="section-inner">
     <div class="zig-row">
-      <div class="zig-media">
-        [ 写真：洋室（代表写真） ]
-        <div class="floorplan-chip" onclick="openFloorplan('洋室（代表）','ツインベッド・シングルベッドの2タイプをご用意。各タイプの詳細な間取り図は下の一覧からご確認いただけます。')"><span class="fp-icon">▦</span>間取り図</div>
+      <div class="zig-media has-gallery">
+        <div class="gallery-main" id="gallery-yoshitsu">
+          <div class="gallery-slide is-active">[ 写真：浴室 ]</div>
+          <div class="gallery-slide">[ 写真：洗面所 ]</div>
+          <div class="gallery-slide">[ 写真：トイレ ]</div>
+          <div class="gallery-slide">[ 写真：アメニティ ]</div>
+          <span class="gallery-count" id="gallery-yoshitsu-count">1 / 4</span>
+          <button class="gallery-nav prev" onclick="galleryNav('gallery-yoshitsu',-1)">‹</button>
+          <button class="gallery-nav next" onclick="galleryNav('gallery-yoshitsu',1)">›</button>
+          <div class="floorplan-chip" onclick="openFloorplan('洋室（代表）','ツインベッド・シングルベッドの2タイプをご用意。各タイプの詳細な間取り図は下の一覧からご確認いただけます。')"><span class="fp-icon">▦</span>間取り図</div>
+        </div>
+        <div class="gallery-thumbs">
+          <div class="gallery-thumb is-active" onclick="gallerySet('gallery-yoshitsu',0)">浴室</div>
+          <div class="gallery-thumb" onclick="gallerySet('gallery-yoshitsu',1)">洗面所</div>
+          <div class="gallery-thumb" onclick="gallerySet('gallery-yoshitsu',2)">トイレ</div>
+          <div class="gallery-thumb" onclick="gallerySet('gallery-yoshitsu',3)">アメニティ</div>
+        </div>
       </div>
       <div class="zig-text">
         <span class="zig-number mincho">03</span>
@@ -610,7 +704,7 @@
     </div>
 
     <div class="design-note">
-      <b>設計メモ：</b>洋室は特別室と同じ並び（写真：左／テキスト：右）に戻し、01→02→03で「左→右→左」のジグザグのリズムになるようにしています。「シングルベッド×定員2名」は相部屋利用（添い寝・エキストラベッド等）の可能性があるため、実際の運用を宿側に要確認のうえ表記を調整。
+      <b>設計メモ：</b>洋室は特別室と同じ並び（写真：左／テキスト：右）に戻し、01→02→03で「左→右→左」のジグザグのリズムになるようにしています。「シングルベッド×定員2名」は相部屋利用（添い寝・エキストラベッド等）の可能性があるため、実際の運用を宿側に要確認のうえ表記を調整。浴室・洗面所・トイレ・アメニティの4枚は、ツイン・シングルの2サイズに共通する設備として代表ギャラリー側にまとめて掲載しています。
     </div>
   </div>
 </section>
@@ -618,7 +712,7 @@
 <!-- ===================== インターネット予約限定特典(全客室共通) ===================== -->
 <div style="background:var(--paper);padding:0 24px 48px;">
   <div class="perk-box" style="max-width:1180px;margin:0 auto;">
-    <span class="perk-icon">🎁</span>
+    <div class="perk-photo">[ 写真：茶香炉 ]</div>
     <span class="perk-text"><b>インターネット予約限定特典</b>公式サイトからのご予約に限り、客室に「茶香炉」をご用意いたします（全客室共通）。</span>
   </div>
 </div>
@@ -703,6 +797,25 @@
 </div>
 
 <script>
+  function gallerySet(containerId, idx){
+    var container = document.getElementById(containerId);
+    var wrap = container.closest('.zig-media');
+    var slides = container.querySelectorAll('.gallery-slide');
+    var thumbs = wrap.querySelectorAll('.gallery-thumb');
+    slides.forEach(function(s,i){ s.classList.toggle('is-active', i === idx); });
+    thumbs.forEach(function(t,i){ t.classList.toggle('is-active', i === idx); });
+    var counter = document.getElementById(containerId + '-count');
+    if(counter){ counter.textContent = (idx + 1) + ' / ' + slides.length; }
+  }
+  function galleryNav(containerId, delta){
+    var container = document.getElementById(containerId);
+    var slides = container.querySelectorAll('.gallery-slide');
+    var current = 0;
+    slides.forEach(function(s,i){ if(s.classList.contains('is-active')) current = i; });
+    var next = (current + delta + slides.length) % slides.length;
+    gallerySet(containerId, next);
+  }
+
   function openFloorplan(name, caption){
     document.getElementById('fpModalTitle').textContent = name + ' の間取り図';
     document.getElementById('fpModalImage').textContent = '[ 間取り図：' + name + ' ]';
